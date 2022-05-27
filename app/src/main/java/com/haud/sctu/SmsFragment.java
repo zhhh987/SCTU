@@ -62,21 +62,24 @@ public class SmsFragment extends Fragment{
         TextView logsCountText = (TextView) getActivity().findViewById(R.id.total_logs_count);
         logsCountText.setText(String.valueOf(smsAdapter.getItemCount()));
 
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
         toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.delete_all_phone_logs).setVisible(false);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 // non-selection mode menu
                 switch (item.getItemId()) {
-                    case R.id.delete_all_sms_logs:
-                        smsViewModel.deleteAllSmsLogs();
-                        Toast.makeText(getContext(), "All SMS logs deleted", Toast.LENGTH_SHORT).show();
+                    case R.id.upload_all_SMS:
+                        exitSelectionMode(toolbar, selectedCount);
+                        return true;
+                    case R.id.settings:
+                        exitSelectionMode(toolbar, selectedCount);
+                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
+                        startActivity(intent);
+
                         return true;
                 }
                 return false;
@@ -98,9 +101,9 @@ public class SmsFragment extends Fragment{
                     // get existing log for updating
                     Intent intent = new Intent(getContext(), AddEditSmsActivity.class);
                     intent.putExtra("EXTRA_ID", smsLog.getId());
+                    intent.putExtra("EXTRA_SID", smsLog.getSid());
+                    intent.putExtra("EXTRA_CONTENT", smsLog.getContent());
                     intent.putExtra("EXTRA_DATE", smsLog.getDate());
-                    intent.putExtra("EXTRA_TIME", smsLog.getTime());
-                    intent.putExtra("EXTRA_INFO", smsLog.getInfo());
                     startActivity(intent);
                 }
             }
@@ -115,7 +118,10 @@ public class SmsFragment extends Fragment{
 
                 toolbar.getMenu().findItem(R.id.delete_icon).setVisible(true);
                 toolbar.getMenu().findItem(R.id.upload_icon).setVisible(true);
-                toolbar.getMenu().findItem(R.id.delete_all_sms_logs).setVisible(false);
+                toolbar.getMenu().findItem(R.id.settings).setVisible(false);
+                toolbar.getMenu().findItem(R.id.upload_all_SMS).setVisible(false);
+                toolbar.getMenu().findItem(R.id.search_icon).setVisible(false);
+
                 toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -184,7 +190,6 @@ public class SmsFragment extends Fragment{
     @Override
     public void onPause() {
         if (selection_mode) {
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar);
             Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
             TextView selectedCount = (TextView) getActivity().findViewById(R.id.selected_logs_count);
             exitSelectionMode(toolbar, selectedCount);
@@ -198,7 +203,7 @@ public class SmsFragment extends Fragment{
         toolbar.setNavigationIcon(null);
         toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
         toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.delete_all_sms_logs).setVisible(true);
+        toolbar.getMenu().findItem(R.id.search_icon).setVisible(true);
         selection_mode = false;
     }
 }

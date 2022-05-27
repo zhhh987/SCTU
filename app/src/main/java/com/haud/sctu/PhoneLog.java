@@ -9,38 +9,45 @@ public class PhoneLog {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String date;
+    private String sid;
 
-    private String time;
+    private String duration;
 
-    private String info;
+    private String simCardNumber;
 
     private boolean isSelected;
+
+    private boolean isMissedCall;
 
     public int getId() {
         return id;
     }
 
-    public String getDate() {
-        return date;
+    public String getSid() {
+        return sid;
     }
 
-    public String getTime() {
-        return time;
+    public String getDuration() {
+        return duration;
     }
 
-    public String getInfo() {
-        return info;
+    public String getSimCardNumber() {
+        return simCardNumber;
+    }
+
+    public boolean getIsMissedCall() {
+        return isMissedCall;
     }
 
     public boolean getIsSelected() {
         return isSelected;
     }
 
-    public PhoneLog(String date, String time, String info, boolean isSelected) {
-        this.date = date;
-        this.time = time;
-        this.info = info;
+    public PhoneLog(String sid, String duration, String simCardNumber, boolean isMissedCall, boolean isSelected) {
+        this.simCardNumber = simCardNumber;
+        this.sid = sid;
+        this.duration = duration;
+        this.isMissedCall = isMissedCall;
         this.isSelected = isSelected;
     }
 

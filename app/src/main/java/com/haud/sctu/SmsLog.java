@@ -9,11 +9,11 @@ public class SmsLog {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    private String sid;
+
+    private String content;
+
     private String date;
-
-    private String time;
-
-    private String info;
 
     private boolean isSelected;
 
@@ -21,26 +21,26 @@ public class SmsLog {
         return id;
     }
 
+    public String getSid() {
+        return sid;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     public String getDate() {
         return date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public String getInfo() {
-        return info;
     }
 
     public boolean getIsSelected() {
         return isSelected;
     }
 
-    public SmsLog(String date, String time, String info, boolean isSelected) {
+    public SmsLog(String sid, String content, String date, boolean isSelected) {
+        this.sid = sid;
+        this.content = content;
         this.date = date;
-        this.time = time;
-        this.info = info;
         this.isSelected = isSelected;
     }
 

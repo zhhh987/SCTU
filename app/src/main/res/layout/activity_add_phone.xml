@@ -8,12 +8,11 @@
     android:padding="30dp">
 
     <EditText
-        android:id="@+id/date_input"
+        android:id="@+id/phone_sid_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter date"
-        android:inputType="textPersonName"
+        android:hint="Enter SID"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.016"
@@ -23,30 +22,30 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/time_input"
+        android:id="@+id/call_duration_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Enter time"
-        android:inputType="textPersonName"
+        android:hint="Enter call duration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_input"
+        app:layout_constraintTop_toBottomOf="@+id/phone_sid_input"
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/info_input"
+        android:id="@+id/sim_number_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Enter details"
-        android:inputType="textPersonName"
+        android:hint="Enter SIM card number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_input"
+        app:layout_constraintTop_toBottomOf="@+id/call_duration_input"
         android:textColor="@color/black"/>
+
+
 
     <Button
         android:id="@+id/save_button"
@@ -58,6 +57,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_input"
+        app:layout_constraintTop_toBottomOf="@+id/sim_number_input"
         app:layout_constraintVertical_bias="0.274" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,18 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/delete_all_sms_logs"
-        android:title="Delete all SMS logs"
+        android:id="@+id/upload_all_SMS"
+        android:title="Upload all uploaded SMS"
         app:showAsAction="never"
         android:orderInCategory="1"/>
 
     <item
-        android:id="@+id/delete_all_phone_logs"
-        android:title="Delete all phone logs"
+        android:id="@+id/settings"
+        android:title="Settings"
         app:showAsAction="never"
         android:orderInCategory="2"/>
-
-
 
     <item
         android:id="@+id/delete_icon"
@@ -30,7 +28,12 @@
         android:icon="@drawable/ic_upload"
         android:orderInCategory="4"/>
 
-
-
+    <item
+        android:id="@+id/search_icon"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:orderInCategory="5"
+        app:showAsAction="always" />
 
 </menu>

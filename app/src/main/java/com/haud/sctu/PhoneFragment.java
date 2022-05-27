@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,22 +55,36 @@ public class PhoneFragment extends Fragment{
             }
         });
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar);
+        TabLayout tabLayout = view.findViewById(R.id.call_logs_tab);
+        TabLayout.Tab firstTab = tabLayout.newTab();
+        firstTab.setText("SCTU Call Logs");
+        TabLayout.Tab secondTab = tabLayout.newTab();
+        secondTab.setText("Device Call History");
+        tabLayout.addTab(firstTab,true);
+        tabLayout.addTab(secondTab,false);
+
+        TextView selectedCount = (TextView) getActivity().findViewById(R.id.selected_logs_count);
+
+        TextView logsCountText = (TextView) getActivity().findViewById(R.id.total_logs_count);
+        logsCountText.setText(String.valueOf(phoneAdapter.getItemCount()));
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
         toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.delete_all_sms_logs).setVisible(false);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 // non-selection mode menu
                 switch (item.getItemId()) {
-                    case R.id.delete_all_phone_logs:
-                        phoneViewModel.deleteAllPhoneLogs();
-                        Toast.makeText(getContext(), "All phone logs deleted", Toast.LENGTH_SHORT).show();
+                    case R.id.upload_all_SMS:
+                        exitSelectionMode(toolbar, selectedCount);
+                        return true;
+                    case R.id.settings:
+                        exitSelectionMode(toolbar, selectedCount);
+                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;
@@ -85,14 +101,14 @@ public class PhoneFragment extends Fragment{
                     } else {
                         selectedPhoneLogs.add(phoneLog);
                     }
-                    collapsingToolbarLayout.setTitle(selectedPhoneLogs.size() + " Selected");
+                    selectedCount.setText(selectedPhoneLogs.size() + " Selected");
                 } else {
                     // get existing log for updating
                     Intent intent = new Intent(getContext(), AddEditPhoneActivity.class);
                     intent.putExtra("EXTRA_ID", phoneLog.getId());
-                    intent.putExtra("EXTRA_DATE", phoneLog.getDate());
-                    intent.putExtra("EXTRA_TIME", phoneLog.getTime());
-                    intent.putExtra("EXTRA_INFO", phoneLog.getInfo());
+                    intent.putExtra("EXTRA_SID", phoneLog.getSid());
+                    intent.putExtra("EXTRA_DURATION", phoneLog.getDuration());
+                    intent.putExtra("EXTRA_SIM_NUMBER", phoneLog.getSimCardNumber());
                     startActivity(intent);
                 }
             }
@@ -103,21 +119,19 @@ public class PhoneFragment extends Fragment{
             public void onItemLongClick(PhoneLog phoneLog) {
                 selectedPhoneLogs.add(phoneLog);
                 selection_mode = true;
-                collapsingToolbarLayout.setTitle(selectedPhoneLogs.size() + " Selected");
+                selectedCount.setText(selectedPhoneLogs.size() + " Selected");
 
                 toolbar.getMenu().findItem(R.id.delete_icon).setVisible(true);
                 toolbar.getMenu().findItem(R.id.upload_icon).setVisible(true);
+                toolbar.getMenu().findItem(R.id.settings).setVisible(false);
+                toolbar.getMenu().findItem(R.id.upload_all_SMS).setVisible(false);
+                toolbar.getMenu().findItem(R.id.search_icon).setVisible(false);
+
                 toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         // selection mode menu
                         switch (item.getItemId()) {
-                            case R.id.delete_all_phone_logs:
-                                phoneViewModel.deleteAllPhoneLogs();
-                                Toast.makeText(getContext(), "All phone logs deleted", Toast.LENGTH_SHORT).show();
-                                exitSelectionMode(collapsingToolbarLayout,toolbar);
-                                selectedPhoneLogs.clear();
-                                return true;
                             case R.id.delete_icon:
                                 for (PhoneLog log : selectedPhoneLogs) {
                                     phoneViewModel.delete(log);
@@ -127,11 +141,11 @@ public class PhoneFragment extends Fragment{
                                 } else {
                                     Toast.makeText(getContext(), selectedPhoneLogs.size() + " phone logs deleted", Toast.LENGTH_SHORT).show();
                                 }
-                                exitSelectionMode(collapsingToolbarLayout,toolbar);
+                                exitSelectionMode(toolbar, selectedCount);
                                 selectedPhoneLogs.clear();
                                 return true;
                             case R.id.upload_icon:
-                                exitSelectionMode(collapsingToolbarLayout,toolbar);
+                                exitSelectionMode(toolbar, selectedCount);
                                 selectedPhoneLogs.clear();
                                 return true;
                         }
@@ -144,7 +158,7 @@ public class PhoneFragment extends Fragment{
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        exitSelectionMode(collapsingToolbarLayout,toolbar);
+                        exitSelectionMode(toolbar, selectedCount);
                         for (PhoneLog log : selectedPhoneLogs) {
                             log.setIsSelected(false);
                         }
@@ -169,7 +183,7 @@ public class PhoneFragment extends Fragment{
                 Toast.makeText(getContext(), "Phone log deleted", Toast.LENGTH_SHORT).show();
 
                 if (selection_mode) {
-                    exitSelectionMode(collapsingToolbarLayout, toolbar);
+                    exitSelectionMode(toolbar, selectedCount);
                     selectedPhoneLogs.clear();
                 }
             }
@@ -182,18 +196,20 @@ public class PhoneFragment extends Fragment{
     @Override
     public void onPause() {
         if (selection_mode) {
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar);
             Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            exitSelectionMode(collapsingToolbarLayout, toolbar);
+            TextView selectedCount = (TextView) getActivity().findViewById(R.id.selected_logs_count);
+            exitSelectionMode(toolbar, selectedCount);
             selectedPhoneLogs.clear();
         }
         super.onPause();
     }
 
-    private void exitSelectionMode(CollapsingToolbarLayout collapsingToolbar, Toolbar toolbar) {
+    private void exitSelectionMode(Toolbar toolbar, TextView selectedCount) {
+        selectedCount.setText(null);
         toolbar.setNavigationIcon(null);
         toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
         toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
+        toolbar.getMenu().findItem(R.id.search_icon).setVisible(true);
         selection_mode = false;
     }
 }

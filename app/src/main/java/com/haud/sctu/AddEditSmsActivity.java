@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class AddEditSmsActivity extends AppCompatActivity {
 
-    private EditText date_input, time_input, info_input;
+    private EditText date_input, sid_input, content_input;
     Button save_button;
     private SmsViewModel smsViewModel;
 
@@ -22,27 +22,28 @@ public class AddEditSmsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_sms);
         smsViewModel = new ViewModelProvider(this).get(SmsViewModel.class);
 
-        date_input = findViewById(R.id.date_input);
-        time_input = findViewById(R.id.time_input);
-        info_input = findViewById(R.id.info_input);
+        sid_input = findViewById(R.id.sms_sid_input);
+        content_input = findViewById(R.id.sms_content_input);
+        date_input = findViewById(R.id.sms_date_input);
         save_button = findViewById(R.id.save_button);
 
         Intent intent = getIntent();
         if (intent.hasExtra("EXTRA_ID")) {
             setTitle("Edit SMS Log");
+            sid_input.setText(intent.getStringExtra("EXTRA_SID"));
+            content_input.setText(intent.getStringExtra("EXTRA_CONTENT"));
             date_input.setText(intent.getStringExtra("EXTRA_DATE"));
-            time_input.setText(intent.getStringExtra("EXTRA_TIME"));
-            info_input.setText(intent.getStringExtra("EXTRA_INFO"));
+
         }
 
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String sid = sid_input.getText().toString();
+                String content = content_input.getText().toString();
                 String date = date_input.getText().toString();
-                String time = time_input.getText().toString();
-                String info = info_input.getText().toString();
 
-                if (date.trim().isEmpty() || time.trim().isEmpty() || info.trim().isEmpty()) {
+                if (sid.trim().isEmpty() || content.trim().isEmpty() || date.trim().isEmpty()) {
                     Toast.makeText(AddEditSmsActivity.this, "Inputs cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (intent.hasExtra("EXTRA_ID")) {
@@ -51,13 +52,13 @@ public class AddEditSmsActivity extends AppCompatActivity {
                         Toast.makeText(AddEditSmsActivity.this, "SMS log cannot be updated", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    SmsLog smsLog = new SmsLog(date,time,info,false);
+                    SmsLog smsLog = new SmsLog(sid,content,date,false);
                     smsLog.setId(id);
                     smsViewModel.update(smsLog);
                     Toast.makeText(AddEditSmsActivity.this, "SMS log updated", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    SmsLog smsLog = new SmsLog(date,time,info,false);
+                    SmsLog smsLog = new SmsLog(sid,content,date,false);
                     smsViewModel.insert(smsLog);
                     Toast.makeText(AddEditSmsActivity.this, "SMS log saved", Toast.LENGTH_SHORT).show();
                     finish();

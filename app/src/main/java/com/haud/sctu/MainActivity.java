@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SmsFragment()).commitNow();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SmsFragment()).commitNow();
 
-        TextView simCardsSelected = this.findViewById(R.id.selected_sim_cards_count);
+        TextView simInfo = this.findViewById(R.id.selected_sim_info);
 
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item,simCards);
@@ -45,15 +44,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    simCardsSelected.setText(spinner.getAdapter().getCount() - 1 + " SIM Card(s) Selected");
+                    simInfo.setText(spinner.getAdapter().getCount() - 1 + " SIM Card(s) Selected");
                 } else {
-                    simCardsSelected.setText("1 SIM Card(s) Selected");
+                    // filler sim info
+                    simInfo.setText("ICCID 89123456789123456789\n" + "MSISDN 6289876545678987");
                 }
-
-
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -100,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, selectedFragment).commit();
                 }
                 return true;
             }

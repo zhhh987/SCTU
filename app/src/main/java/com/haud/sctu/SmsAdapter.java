@@ -22,7 +22,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     @NonNull
     @Override
     public SmsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.logs_row,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sms_row,parent,false);
         return new SmsHolder(itemView);
     }
 
@@ -30,11 +30,11 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     public void onBindViewHolder(@NonNull SmsHolder holder, int position) {
         SmsLog currentSmsLog = smsLogs.get(position);
         holder.textViewDate.setText(currentSmsLog.getDate());
-        holder.textViewTime.setText(currentSmsLog.getTime());
-        holder.textViewInfo.setText(currentSmsLog.getInfo());
+        holder.textViewSid.setText(currentSmsLog.getSid());
+        holder.textViewContent.setText(currentSmsLog.getContent());
 
         if (currentSmsLog.getIsSelected()) {
-            holder.cardView.setCardBackgroundColor(Color.LTGRAY);
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#E0DCEC"));
         } else {
             holder.cardView.setCardBackgroundColor(Color.WHITE);
         }
@@ -56,15 +56,15 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
 
     class SmsHolder extends RecyclerView.ViewHolder {
         private TextView textViewDate;
-        private TextView textViewTime;
-        private TextView textViewInfo;
-        CardView cardView = (CardView) itemView.findViewById(R.id.card_view);
+        private TextView textViewSid;
+        private TextView textViewContent;
+        CardView cardView = (CardView) itemView.findViewById(R.id.sms_card_view);
 
         public SmsHolder(View itemView) {
             super(itemView);
-            textViewDate = itemView.findViewById(R.id.logs_date_tv);
-            textViewTime = itemView.findViewById(R.id.logs_time_tv);
-            textViewInfo = itemView.findViewById(R.id.logs_info_tv);
+            textViewDate = itemView.findViewById(R.id.sms_date_tv);
+            textViewSid = itemView.findViewById(R.id.sms_sid_tv);
+            textViewContent = itemView.findViewById(R.id.sms_content_tv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -33,6 +33,10 @@
             android:label="Logs List"
             android:theme="@style/Theme.SCTU"/>
 
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/Theme.SCTU"/>
+
     </application>
 
 </manifest>

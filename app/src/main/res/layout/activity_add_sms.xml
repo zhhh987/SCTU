@@ -8,12 +8,11 @@
     android:padding="30dp">
 
     <EditText
-        android:id="@+id/date_input"
+        android:id="@+id/sms_sid_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter date"
-        android:inputType="textPersonName"
+        android:hint="Enter SID"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.016"
@@ -23,29 +22,27 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/time_input"
+        android:id="@+id/sms_content_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Enter time"
-        android:inputType="textPersonName"
+        android:hint="Enter SMS content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_input"
+        app:layout_constraintTop_toBottomOf="@+id/sms_sid_input"
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/info_input"
+        android:id="@+id/sms_date_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Enter details"
-        android:inputType="textPersonName"
+        android:hint="Enter date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_input"
+        app:layout_constraintTop_toBottomOf="@+id/sms_content_input"
         android:textColor="@color/black"/>
 
     <Button
@@ -58,6 +55,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_input"
+        app:layout_constraintTop_toBottomOf="@+id/sms_date_input"
         app:layout_constraintVertical_bias="0.274" />
 </androidx.constraintlayout.widget.ConstraintLayout>
