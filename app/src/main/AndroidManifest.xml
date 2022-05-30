@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SCTU">
         <activity
-            android:name=".SplashScreen"
+            android:name=".activity.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,23 +18,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddEditSmsActivity"
+        <activity android:name=".activity.AddEditSmsActivity"
             android:label="Add New SMS Log"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AddLog"/>
 
-        <activity android:name=".AddEditPhoneActivity"
+        <activity android:name=".activity.AddEditPhoneActivity"
             android:label="Add New Phone Log"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AddLog"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="Logs List"
             android:theme="@style/Theme.SCTU"/>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:theme="@style/Theme.SCTU"/>
 
     </application>

@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.viewmodel.PhoneViewModel;
+import com.haud.sctu.R;
 
 public class AddEditPhoneActivity extends AppCompatActivity {
 

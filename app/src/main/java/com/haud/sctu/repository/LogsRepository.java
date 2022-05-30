@@ -1,9 +1,15 @@
-package com.haud.sctu;
+package com.haud.sctu.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.haud.sctu.dao.PhoneDao;
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.dao.SmsDao;
+import com.haud.sctu.model.SmsLog;
+import com.haud.sctu.db.LogsDatabase;
 
 import java.util.List;
 

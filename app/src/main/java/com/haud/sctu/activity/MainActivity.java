@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.haud.sctu.R;
 
 public class MainActivity extends AppCompatActivity {
 

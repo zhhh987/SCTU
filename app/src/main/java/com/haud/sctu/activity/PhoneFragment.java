@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +19,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.haud.sctu.helper.PhoneAdapter;
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.viewmodel.PhoneViewModel;
+import com.haud.sctu.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +86,7 @@ public class PhoneFragment extends Fragment{
                         return true;
                     case R.id.settings:
                         exitSelectionMode(toolbar, selectedCount);
-                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
+                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
                         startActivity(intent);
                         return true;
                 }

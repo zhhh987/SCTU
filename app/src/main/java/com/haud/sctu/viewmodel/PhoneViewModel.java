@@ -1,10 +1,13 @@
-package com.haud.sctu;
+package com.haud.sctu.viewmodel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.repository.LogsRepository;
 
 import java.util.List;
 

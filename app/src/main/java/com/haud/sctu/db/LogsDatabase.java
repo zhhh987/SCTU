@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.db;
 
 
 import android.content.Context;
@@ -7,7 +7,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {SmsLog.class,PhoneLog.class}, version = 4)
+import com.haud.sctu.dao.PhoneDao;
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.dao.SmsDao;
+import com.haud.sctu.model.SmsLog;
+
+@Database(entities = {SmsLog.class, PhoneLog.class}, version = 4)
 public abstract class LogsDatabase extends RoomDatabase {
 
     private static LogsDatabase instance;

@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.dao;
 
 
 
@@ -8,6 +8,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.haud.sctu.model.PhoneLog;
 
 import java.util.List;
 

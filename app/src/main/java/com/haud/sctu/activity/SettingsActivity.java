@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

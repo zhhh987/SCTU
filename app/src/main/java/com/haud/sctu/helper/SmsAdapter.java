@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.helper;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.haud.sctu.R;
+import com.haud.sctu.model.SmsLog;
 
 import java.util.ArrayList;
 import java.util.List;

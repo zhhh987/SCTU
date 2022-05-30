@@ -1,7 +1,6 @@
-package com.haud.sctu;
+package com.haud.sctu.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,9 +19,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-
-import org.w3c.dom.Text;
+import com.haud.sctu.R;
+import com.haud.sctu.helper.SmsAdapter;
+import com.haud.sctu.model.SmsLog;
+import com.haud.sctu.viewmodel.SmsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class SmsFragment extends Fragment{
                         return true;
                     case R.id.settings:
                         exitSelectionMode(toolbar, selectedCount);
-                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
+                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
                         startActivity(intent);
 
                         return true;

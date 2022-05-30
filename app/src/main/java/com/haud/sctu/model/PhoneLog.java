@@ -1,4 +1,4 @@
-package com.haud.sctu;
+package com.haud.sctu.model;
 
 
 import androidx.room.Entity;

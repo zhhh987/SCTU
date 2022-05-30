@@ -1,8 +1,7 @@
-package com.haud.sctu;
+package com.haud.sctu.helper;
 
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.R;
 
 import java.util.ArrayList;
 import java.util.List;
