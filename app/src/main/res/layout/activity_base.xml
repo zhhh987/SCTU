@@ -76,28 +76,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <!-- Selected SIM Info -->
-                        <TextView
-                            android:id="@+id/selectedSimInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="#fff"
-                            style="bold"
-                            android:textSize="14sp"
-                            android:layout_centerHorizontal="true"/>
-
                         <!-- Custom Spinners to choose SIM-->
                         <!-- Shown if toolbar is expanded -->
                         <RelativeLayout
-                            android:layout_below="@id/selectedSimInfo"
-                            android:animateLayoutChanges="true"
-                            android:layout_width="100dp"
                             android:id="@+id/simSpinnerWrapperWhenHeaderExpanded"
-                            android:background="@drawable/spinner_bg"
+                            android:layout_width="105dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="15dp">
+                            android:layout_marginTop="5dp"
+                            android:animateLayoutChanges="true"
+                            android:background="@drawable/spinner_bg">
 
                             <Spinner
                                 android:id="@+id/spinnerSimWhenHeaderExpanded"
@@ -106,47 +94,100 @@
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="center"
                                 android:background="@color/transparent"
+                                android:dropDownWidth="105dp"
                                 android:gravity="center"
-                                android:paddingTop="2dp"
-                                android:paddingBottom="2dp"
+                                android:popupBackground="@drawable/spinner_menu"
                                 android:spinnerMode="dropdown" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_spinner_arrow"
-                                android:layout_alignParentEnd="true"/>
-
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/ic_spinner_arrow" />
                         </RelativeLayout>
 
+                        <!-- Selected SIM Info -->
                         <TextView
-                            android:layout_marginTop="15dp"
-                            android:id="@+id/waLogTotal"
+                            android:id="@+id/selectedSimInfo"
+                            style="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_below="@id/simSpinnerWrapperWhenHeaderExpanded"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="12dp"
+                            android:lineSpacingMultiplier="1.1"
                             android:text=""
-                            android:textSize="18sp"
+                            android:textAlignment="center"
                             android:textColor="#fff"
-                            android:textStyle="bold"
-                            android:layout_centerHorizontal="true"/>
+                            android:textSize="12dp" />
 
-                        <TextView
-                            android:id="@+id/waLogStatus"
-                            android:layout_below="@id/waLogTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="14sp"
-                            android:textColor="#fff"
-                            android:textStyle="bold"
-                            android:layout_centerHorizontal="true"/>
+
+                        <FrameLayout
+                            android:layout_width="45dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="90dp"
+                            android:layout_marginLeft="145dp"
+                            android:background="@drawable/logs_count_bg">
+
+                            <FrameLayout
+                                android:layout_width="25dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="right">
+
+                                <TextView
+                                    android:id="@+id/waLogTotal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="11dp"
+                                    android:textStyle="bold"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"/>
+                            </FrameLayout>
+
+                            <ImageView
+                                android:id="@+id/message_icon"
+                                android:layout_width="21dp"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@drawable/ic_message"
+                                android:paddingLeft="6dp"/>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="45dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="90dp"
+                            android:layout_marginLeft="203dp"
+                            android:background="@drawable/logs_count_bg">
+
+                            <FrameLayout
+                                android:layout_width="25dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="right">
+
+                                <TextView
+                                    android:id="@+id/waLogStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textSize="11dp"
+                                    android:textStyle="bold"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"/>
+                            </FrameLayout>
+
+                            <ImageView
+                                android:id="@+id/uploaded_icon"
+                                android:layout_width="21dp"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@drawable/ic_upload"
+                                android:paddingLeft="6dp"/>
+                        </FrameLayout>
+
                     </RelativeLayout>
 
                 </FrameLayout>
 
-
-                <!--bottom navigation-->
                 <include layout="@layout/layout_toolbar"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -157,13 +198,10 @@
             android:id="@+id/activityFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="30dp"
             android:background="@drawable/rounded_corners"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-
         </FrameLayout>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -173,24 +211,22 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:visibility="gone"
+            android:id="@+id/mProgressBar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/mProgressBar"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:visibility="gone" />
 
         <!--bottom navigation-->
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_alignParentBottom="true"
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            app:menu="@menu/bottom_nav_menu"
-            android:layout_gravity="bottom"/>
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_nav_menu" />
 
     </RelativeLayout>
-
-
 
 </RelativeLayout>

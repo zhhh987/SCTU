@@ -41,7 +41,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneHolder>
         Resources res = holder.itemView.getResources();
 
         if (currentPhoneLog.getIsSelected()) {
-            holder.cardView.setCardBackgroundColor(Color.LTGRAY);
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#E0DCEC"));
         } else {
             holder.cardView.setCardBackgroundColor(Color.WHITE);
         }

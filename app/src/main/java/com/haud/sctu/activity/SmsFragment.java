@@ -1,11 +1,13 @@
 package com.haud.sctu.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.haud.sctu.R;
 import com.haud.sctu.helper.SmsAdapter;
 import com.haud.sctu.model.SmsLog;
@@ -27,10 +31,10 @@ import com.haud.sctu.viewmodel.SmsViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmsFragment extends Fragment{
-    private SmsViewModel smsViewModel;
+public class SmsFragment extends Fragment {
     private ArrayList<SmsLog> selectedSmsLogs = new ArrayList<>();
     private boolean selection_mode = false;
+    final SmsAdapter smsAdapter = new SmsAdapter();
 
     public SmsFragment() {
     }
@@ -39,17 +43,14 @@ public class SmsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
-
         setHasOptionsMenu(true);
 
         RecyclerView recyclerView = view.findViewById(R.id.smsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-
-        final SmsAdapter smsAdapter = new SmsAdapter();
         recyclerView.setAdapter(smsAdapter);
 
-        smsViewModel = new ViewModelProvider(this).get(SmsViewModel.class);
+        SmsViewModel smsViewModel = new ViewModelProvider(getActivity()).get(SmsViewModel.class);
         smsViewModel.getAllSmsLogs().observe(getViewLifecycleOwner(), new Observer<List<SmsLog>>() {
             @Override
             public void onChanged(List<SmsLog> smsLogs) {
@@ -57,31 +58,40 @@ public class SmsFragment extends Fragment{
             }
         });
 
-        TextView selectedCount = (TextView) getActivity().findViewById(R.id.selected_logs_count);
-
-        TextView logsCountText = (TextView) getActivity().findViewById(R.id.total_logs_count);
-        logsCountText.setText(String.valueOf(smsAdapter.getItemCount()));
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.main_menu);
-        toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
+        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
+        toolbar.getMenu().findItem(R.id.uploadAllCalls).setVisible(false);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // non-selection mode menu
                 switch (item.getItemId()) {
-                    case R.id.upload_all_SMS:
-                        exitSelectionMode(toolbar, selectedCount);
-                        return true;
                     case R.id.settings:
-                        exitSelectionMode(toolbar, selectedCount);
-                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
                         startActivity(intent);
+                        return true;
+                    case R.id.uploadAllSms:
+                        return true;
+                    case R.id.uploadSelected:
+                        return true;
+                    case R.id.deleteSelected:
+                        for (SmsLog log : selectedSmsLogs) {
+                            smsViewModel.delete(log);
+                        }
+                        selectedSmsLogs.clear();
 
                         return true;
+                    case R.id.searchLogs:
+                        AppBarLayout appBarLayout = ((BaseActivity) getActivity()).getAppBarLayout();
+                        ((BaseActivity) getActivity()).lockAppBarClosed(appBarLayout);
+                        ((BaseActivity) getActivity()).enableToolbarWhenSearchMode();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SearchFragment()).commitNow();
+                        return true;
                 }
+                ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
+                selection_mode = false;
                 return false;
             }
         });
@@ -96,7 +106,7 @@ public class SmsFragment extends Fragment{
                     } else {
                         selectedSmsLogs.add(smsLog);
                     }
-                    selectedCount.setText(selectedSmsLogs.size() + " Selected");
+                    ((BaseActivity) getActivity()).setPageTitle(selectedSmsLogs.size() + " Selected");
                 } else {
                     // get existing log for updating
                     Intent intent = new Intent(getContext(), AddEditSmsActivity.class);
@@ -112,98 +122,28 @@ public class SmsFragment extends Fragment{
         smsAdapter.setOnItemLongClickListener(new SmsAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(SmsLog smsLog) {
+                ((BaseActivity) getActivity()).enableToolbarWhenSelectionMode();
                 selection_mode = true;
                 selectedSmsLogs.add(smsLog);
-                selectedCount.setText(selectedSmsLogs.size() + " Selected");
+                ((BaseActivity) getActivity()).setPageTitle(selectedSmsLogs.size() + " Selected");
 
-                toolbar.getMenu().findItem(R.id.delete_icon).setVisible(true);
-                toolbar.getMenu().findItem(R.id.upload_icon).setVisible(true);
-                toolbar.getMenu().findItem(R.id.settings).setVisible(false);
-                toolbar.getMenu().findItem(R.id.upload_all_SMS).setVisible(false);
-                toolbar.getMenu().findItem(R.id.search_icon).setVisible(false);
-
-                toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        // selection mode menu
-                        switch (item.getItemId()) {
-                            case R.id.delete_icon:
-                                for (SmsLog log : selectedSmsLogs) {
-                                    smsViewModel.delete(log);
-                                }
-                                if (selectedSmsLogs.size() == 1) {
-                                    Toast.makeText(getContext(), "1 SMS log deleted", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getContext(), selectedSmsLogs.size() + " SMS logs deleted", Toast.LENGTH_SHORT).show();
-                                }
-                                exitSelectionMode(toolbar, selectedCount);
-                                selectedSmsLogs.clear();
-                                return true;
-                            case R.id.upload_icon:
-                                exitSelectionMode(toolbar, selectedCount);
-                                selectedSmsLogs.clear();
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-
-                // back button to exit selection mode w/o performing any actions
-                toolbar.setNavigationIcon(R.drawable.ic_left_arrow);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                ImageView backButton = (ImageView) getActivity().findViewById(R.id.backBtn);
+                backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        exitSelectionMode(toolbar, selectedCount);
+                        selection_mode = false;
                         for (SmsLog log : selectedSmsLogs) {
                             log.setIsSelected(false);
                         }
                         selectedSmsLogs.clear();
-                        Toast.makeText(getContext(), "All selection cleared", Toast.LENGTH_SHORT).show();
                         smsAdapter.notifyDataSetChanged();
+                        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                     }
                 });
             }
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                smsViewModel.delete(smsAdapter.getSmsLogAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(getContext(), "SMS log deleted", Toast.LENGTH_SHORT).show();
-
-                if (selection_mode) {
-                    exitSelectionMode(toolbar, selectedCount);
-                    selectedSmsLogs.clear();
-                }
-            }
-        }).attachToRecyclerView(recyclerView);
-
         return view;
     }
 
-    // exit selection mode if bottom nav or add button is pressed
-    @Override
-    public void onPause() {
-        if (selection_mode) {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            TextView selectedCount = (TextView) getActivity().findViewById(R.id.selected_logs_count);
-            exitSelectionMode(toolbar, selectedCount);
-            selectedSmsLogs.clear();
-        }
-        super.onPause();
-    }
-
-    private void exitSelectionMode(Toolbar toolbar, TextView selectedCount) {
-        selectedCount.setText(null);
-        toolbar.setNavigationIcon(null);
-        toolbar.getMenu().findItem(R.id.delete_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.upload_icon).setVisible(false);
-        toolbar.getMenu().findItem(R.id.search_icon).setVisible(true);
-        selection_mode = false;
-    }
 }

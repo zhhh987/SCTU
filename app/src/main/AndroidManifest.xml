@@ -18,6 +18,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+        android:name=".activity.MainActivity"
+        android:label="Logs List"
+        android:theme="@style/Theme.SCTU"/>
+
+
         <activity android:name=".activity.AddEditSmsActivity"
             android:label="Add New SMS Log"
             android:parentActivityName=".activity.MainActivity"
@@ -28,10 +34,7 @@
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AddLog"/>
 
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="Logs List"
-            android:theme="@style/Theme.SCTU"/>
+
 
         <activity
             android:name=".activity.SettingsActivity"

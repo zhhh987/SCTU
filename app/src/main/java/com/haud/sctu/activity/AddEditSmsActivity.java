@@ -14,7 +14,7 @@ import com.haud.sctu.R;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.viewmodel.SmsViewModel;
 
-public class AddEditSmsActivity extends AppCompatActivity {
+public class AddEditSmsActivity extends BaseActivity {
 
     private EditText date_input, sid_input, content_input;
     Button save_button;
@@ -56,13 +56,13 @@ public class AddEditSmsActivity extends AppCompatActivity {
                         Toast.makeText(AddEditSmsActivity.this, "SMS log cannot be updated", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    SmsLog smsLog = new SmsLog(sid,content,date,false);
+                    SmsLog smsLog = new SmsLog(sid,content,date,false,false);
                     smsLog.setId(id);
                     smsViewModel.update(smsLog);
                     Toast.makeText(AddEditSmsActivity.this, "SMS log updated", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    SmsLog smsLog = new SmsLog(sid,content,date,false);
+                    SmsLog smsLog = new SmsLog(sid,content,date,false,false);
                     smsViewModel.insert(smsLog);
                     Toast.makeText(AddEditSmsActivity.this, "SMS log saved", Toast.LENGTH_SHORT).show();
                     finish();

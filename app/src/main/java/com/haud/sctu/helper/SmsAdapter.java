@@ -21,6 +21,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private boolean selection_mode = false;
+    private int integer;
 
     @NonNull
     @Override
@@ -52,6 +53,8 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
         this.smsLogs = smsLogs;
         notifyDataSetChanged();
     }
+
+
 
     public SmsLog getSmsLogAt(int position) {
         return smsLogs.get(position);

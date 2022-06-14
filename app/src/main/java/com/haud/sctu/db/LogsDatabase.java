@@ -12,7 +12,7 @@ import com.haud.sctu.model.PhoneLog;
 import com.haud.sctu.dao.SmsDao;
 import com.haud.sctu.model.SmsLog;
 
-@Database(entities = {SmsLog.class, PhoneLog.class}, version = 4)
+@Database(entities = {SmsLog.class, PhoneLog.class}, version = 5)
 public abstract class LogsDatabase extends RoomDatabase {
 
     private static LogsDatabase instance;

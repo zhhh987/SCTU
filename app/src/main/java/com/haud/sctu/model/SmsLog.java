@@ -15,6 +15,8 @@ public class SmsLog {
 
     private String date;
 
+    private boolean isUploaded;
+
     private boolean isSelected;
 
     public int getId() {
@@ -33,19 +35,28 @@ public class SmsLog {
         return date;
     }
 
+    public boolean getIsUploaded() {
+        return isUploaded;
+    }
+
     public boolean getIsSelected() {
         return isSelected;
     }
 
-    public SmsLog(String sid, String content, String date, boolean isSelected) {
+    public SmsLog(String sid, String content, String date, boolean isUploaded, boolean isSelected) {
         this.sid = sid;
         this.content = content;
         this.date = date;
+        this.isUploaded = isUploaded;
         this.isSelected = isSelected;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setIsUploaded(boolean isUploaded) {
+        this.isUploaded = isUploaded;
     }
 
     public void setIsSelected(boolean isSelected) {

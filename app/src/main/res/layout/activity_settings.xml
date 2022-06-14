@@ -8,30 +8,687 @@
     android:layout_height="match_parent"
     android:background="@color/purple_700">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/settings_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_left_arrow"
-        app:title="Settings">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:src="@drawable/bg_pic_1"
-            android:layout_gravity="top"
-            android:alpha="0.7"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <FrameLayout
-        android:id="@+id/settings_fragment_container"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_corners">
-    </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/settings_preferences_frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/settings_preferences_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preferences"
+                android:textSize="12dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sms_notifications_cv"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@id/settings_preferences_tv"
+                android:layout_marginTop="5dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_notifications" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="SMS Notifications"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:switchMinWidth="13dp"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/call_recording_path_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/sms_notifications_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_folder" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Call Recording Path"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="/storage/emulated/0/Call"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/upload_on_incoming_log_received_cv"
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:layout_below="@+id/call_recording_path_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_upload"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="Upload On Incoming Log Received"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+
+                <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track"
+                    android:switchMinWidth="13dp"/>
+            </androidx.cardview.widget.CardView>
 
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/check_uploaded_logs_cv"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/upload_on_incoming_log_received_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_alarm" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="Check Uploaded Logs Periodically"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+
+                <Switch
+                    android:id="@+id/switch3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track"
+                    android:switchMinWidth="13dp"/>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/settings_installed_sim_cards_frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_preferences_frameLayout"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/settings_installed_sim_cards_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Installed SIM Card(s)"
+                android:textSize="12dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sim1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/settings_installed_sim_cards_tv"
+                android:layout_marginTop="5dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_sim_card"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="17dp"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="SIM 1"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="ICCID 8912345678923456789"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sim2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/sim1"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_sim_card"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="17dp"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    android:textSize="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="SIM 2"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="ICCID 8912345678923456789"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/settings_device_frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_installed_sim_cards_frameLayout"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/settings_device_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Device"
+                android:textSize="12dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/default_messaging_app_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/settings_device_tv"
+                android:layout_marginTop="5dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_message"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Default Messaging App"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/multi_sim_supported_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/default_messaging_app_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="3.5dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_sim_card"
+                    app:tint="#AE838383" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_sim_card"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Multi SIM Supported"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/wifi_enabled_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/multi_sim_supported_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wifi"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="WiFi Enabled"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/wifi_signal_strength_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/wifi_enabled_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wifi"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="WiFi Signal Strength"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="80%"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/active_network_ssid_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/wifi_signal_strength_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wifi"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Active Network SSID"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Lorem Ipsum"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/network_connected_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/active_network_ssid_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wifi"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Network Connected"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/location_enabled_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/network_connected_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_location_enabled"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Network Enabled"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/location_last_fixed_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/location_enabled_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_location_last_fixed"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Location Last Fixed"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mobile_signal_strength_cv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/location_last_fixed_cv"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_signal_strength"
+                    app:tint="#C4C4C4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Mobile Signal Strength"
+                    android:textColor="#838383"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="Yes"
+                    android:textColor="#C4C4C4"
+                    android:textSize="9dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="30dp"
+                    android:background="#E5E5E5" />
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
