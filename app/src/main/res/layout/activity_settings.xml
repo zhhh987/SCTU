@@ -216,7 +216,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_sim_card"
+                    android:src="@drawable/ic_purple_sim_card"
                     app:tint="#C4C4C4" />
 
                 <TextView
@@ -265,7 +265,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_sim_card"
+                    android:src="@drawable/ic_purple_sim_card"
                     app:tint="#C4C4C4" />
 
                 <TextView
@@ -373,14 +373,14 @@
                     android:layout_height="15dp"
                     android:layout_marginLeft="3.5dp"
                     android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_sim_card"
+                    android:src="@drawable/ic_purple_sim_card"
                     app:tint="#AE838383" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_sim_card"
+                    android:src="@drawable/ic_purple_sim_card"
                     app:tint="#C4C4C4" />
 
                 <TextView

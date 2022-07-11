@@ -4,10 +4,9 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.haud.sctu.dao.PhoneDao;
-import com.haud.sctu.model.PhoneLog;
+import com.haud.sctu.dao.CallDao;
+import com.haud.sctu.model.CallLog;
 import com.haud.sctu.dao.SmsDao;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.db.LogsDatabase;
@@ -15,17 +14,18 @@ import com.haud.sctu.db.LogsDatabase;
 import java.util.List;
 
 public class LogsRepository {
-    private PhoneDao phoneDao;
+    private CallDao callDao;
     private SmsDao smsDao;
-    private LiveData<List<PhoneLog>> allPhoneLogs;
+    private LiveData<List<CallLog>> allCallLogs;
     private LiveData<List<SmsLog>> allSmsLogs;
+
 
     public LogsRepository(Application application) {
         LogsDatabase logsDatabase = LogsDatabase.getInstance(application);
         smsDao = logsDatabase.smsDao();
-        phoneDao = logsDatabase.phoneDao();
-        allSmsLogs = smsDao.getAllSmsLogs();
-        allPhoneLogs = phoneDao.getAllPhoneLogs();
+        callDao = logsDatabase.callDao();
+        allSmsLogs = smsDao.getLatestSmsLogsByOa();
+        allCallLogs = callDao.getAllCallLogs();
     }
 
     // sms logs
@@ -41,13 +41,23 @@ public class LogsRepository {
         new DeleteSmsAsyncTask(smsDao).execute(smsLog);
     }
 
-    public void deleteAllSmsLogs() {
-        new DeleteAllSmsAsyncTask(smsDao).execute();
+    public void deleteAllSmsLogsByOa(String selectedOa) {
+        new DeleteAllSmsByOaAsyncTask(smsDao).execute();
     }
 
     public LiveData<List<SmsLog>> getAllSmsLogs() {
         return allSmsLogs;
     }
+
+    public LiveData<List<SmsLog>> getAllSmsByOa(String selectedOa) {
+        return smsDao.getAllSmsByOa(selectedOa);
+    }
+
+    public LiveData<List<SmsLog>> getSmsSearchResults(String input) {
+        return smsDao.getSmsSearchResults(input);
+    }
+
+
 
     private static class InsertSmsAsyncTask extends AsyncTask<SmsLog, Void, Void> {
         private SmsDao smsDao;
@@ -91,93 +101,94 @@ public class LogsRepository {
         }
     }
 
-    private static class DeleteAllSmsAsyncTask extends AsyncTask<Void, Void, Void> {
+    private static class DeleteAllSmsByOaAsyncTask extends AsyncTask<Void, Void, Void> {
         private SmsDao smsDao;
+        private String selectedOa;
 
-        private DeleteAllSmsAsyncTask(SmsDao smsDao)  {
+        private DeleteAllSmsByOaAsyncTask(SmsDao smsDao)  {
             this.smsDao = smsDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            smsDao.deleteAllSmsLogs();
+            smsDao.deleteAllSmsLogsByOa(selectedOa);
             return null;
         }
     }
 
-    // phone logs
-    public void insertPhone(PhoneLog phoneLog) {
-        new InsertPhoneAsyncTask(phoneDao).execute(phoneLog);
+    // call logs
+    public void insertCall(CallLog callLog) {
+        new InsertCallAsyncTask(callDao).execute(callLog);
     }
 
-    public void updatePhone(PhoneLog phoneLog) {
-        new UpdatePhoneAsyncTask(phoneDao).execute(phoneLog);
+    public void updateCall(CallLog callLog) {
+        new UpdateCallAsyncTask(callDao).execute(callLog);
     }
 
-    public void deletePhone(PhoneLog phoneLog) {
-        new DeletePhoneAsyncTask(phoneDao).execute(phoneLog);
+    public void deleteCall(CallLog callLog) {
+        new DeleteCallAsyncTask(callDao).execute(callLog);
     }
 
-    public void deleteAllPhoneLogs() {
-        new DeleteAllPhoneAsyncTask(phoneDao).execute();
+    public void deleteAllCallLogs() {
+        new DeleteAllCallAsyncTask(callDao).execute();
     }
 
-    public LiveData<List<PhoneLog>> getAllPhoneLogs() {
-        return allPhoneLogs;
+    public LiveData<List<CallLog>> getAllCallLogs() {
+        return allCallLogs;
     }
 
-    private static class InsertPhoneAsyncTask extends AsyncTask<PhoneLog, Void, Void> {
-        private PhoneDao phoneDao;
+    private static class InsertCallAsyncTask extends AsyncTask<CallLog, Void, Void> {
+        private CallDao callDao;
 
-        private InsertPhoneAsyncTask(PhoneDao phoneDao) {
-            this.phoneDao = phoneDao;
+        private InsertCallAsyncTask(CallDao callDao) {
+            this.callDao = callDao;
         }
 
         @Override
-        protected Void doInBackground(PhoneLog... phoneLogs) {
-            phoneDao.insert(phoneLogs[0]);
+        protected Void doInBackground(CallLog... callLogs) {
+            callDao.insert(callLogs[0]);
             return null;
         }
     }
 
-    private static class UpdatePhoneAsyncTask extends AsyncTask<PhoneLog, Void, Void> {
-        private PhoneDao phoneDao;
+    private static class UpdateCallAsyncTask extends AsyncTask<CallLog, Void, Void> {
+        private CallDao callDao;
 
-        private UpdatePhoneAsyncTask(PhoneDao phoneDao) {
-            this.phoneDao = phoneDao;
+        private UpdateCallAsyncTask(CallDao callDao) {
+            this.callDao = callDao;
         }
 
         @Override
-        protected Void doInBackground(PhoneLog... phoneLogs) {
-            phoneDao.update(phoneLogs[0]);
+        protected Void doInBackground(CallLog... callLogs) {
+            callDao.update(callLogs[0]);
             return null;
         }
     }
 
-    private static class DeletePhoneAsyncTask extends AsyncTask<PhoneLog, Void, Void> {
-        private PhoneDao phoneDao;
+    private static class DeleteCallAsyncTask extends AsyncTask<CallLog, Void, Void> {
+        private CallDao callDao;
 
-        private DeletePhoneAsyncTask(PhoneDao phoneDao) {
-            this.phoneDao = phoneDao;
+        private DeleteCallAsyncTask(CallDao callDao) {
+            this.callDao = callDao;
         }
 
         @Override
-        protected Void doInBackground(PhoneLog... phoneLogs) {
-            phoneDao.delete(phoneLogs[0]);
+        protected Void doInBackground(CallLog... callLogs) {
+            callDao.delete(callLogs[0]);
             return null;
         }
     }
 
-    private static class DeleteAllPhoneAsyncTask extends AsyncTask<Void, Void, Void> {
-        private PhoneDao phoneDao;
+    private static class DeleteAllCallAsyncTask extends AsyncTask<Void, Void, Void> {
+        private CallDao callDao;
 
-        private DeleteAllPhoneAsyncTask(PhoneDao phoneDao)  {
-            this.phoneDao = phoneDao;
+        private DeleteAllCallAsyncTask(CallDao callDao)  {
+            this.callDao = callDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            phoneDao.deleteAllPhoneLogs();
+            callDao.deleteAllCallLogs();
             return null;
         }
     }

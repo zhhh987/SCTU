@@ -7,56 +7,48 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
-import com.haud.sctu.helper.PhoneAdapter;
-import com.haud.sctu.model.PhoneLog;
-import com.haud.sctu.model.SmsLog;
-import com.haud.sctu.viewmodel.PhoneViewModel;
+import com.haud.sctu.helper.CallAdapter;
+import com.haud.sctu.model.CallLog;
+import com.haud.sctu.viewmodel.CallViewModel;
 import com.haud.sctu.R;
-import com.haud.sctu.viewmodel.SmsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneFragment extends Fragment {
-    private ArrayList<PhoneLog> selectedPhoneLogs = new ArrayList<>();
+public class CallFragment extends Fragment {
+    private ArrayList<CallLog> selectedCallLogs = new ArrayList<>();
     private boolean selection_mode = false;
+    final CallAdapter callAdapter = new CallAdapter();
 
-    public PhoneFragment() {
+    public CallFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_phone, container, false);
+        View view = inflater.inflate(R.layout.fragment_call, container, false);
         setHasOptionsMenu(true);
 
-        RecyclerView recyclerView = view.findViewById(R.id.phoneRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.callRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(callAdapter);
 
-        final PhoneAdapter phoneAdapter = new PhoneAdapter();
-        recyclerView.setAdapter(phoneAdapter);
-
-        PhoneViewModel phoneViewModel = new ViewModelProvider(getActivity()).get(PhoneViewModel.class);
-        phoneViewModel.getAllPhoneLogs().observe(getViewLifecycleOwner(), new Observer<List<PhoneLog>>() {
+        CallViewModel callViewModel = new ViewModelProvider(getActivity()).get(CallViewModel.class);
+        callViewModel.getAllCallLogs().observe(getViewLifecycleOwner(), new Observer<List<CallLog>>() {
             @Override
-            public void onChanged(List<PhoneLog> phoneLogs) {
-                phoneAdapter.setPhoneLogs(phoneLogs);
+            public void onChanged(List<CallLog> callLogs) {
+                callAdapter.setCallLogs(callLogs);
             }
         });
 
@@ -68,7 +60,7 @@ public class PhoneFragment extends Fragment {
         tabLayout.addTab(firstTab, true);
         tabLayout.addTab(secondTab, false);
 
-
+        AppBarLayout appBarLayout = ((BaseActivity) getActivity()).getAppBarLayout();
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.main_menu);
@@ -87,17 +79,15 @@ public class PhoneFragment extends Fragment {
                     case R.id.uploadAllCalls:
                         return true;
                     case R.id.uploadSelected:
-                        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                         return true;
                     case R.id.deleteSelected:
-                        for (PhoneLog log : selectedPhoneLogs) {
-                            phoneViewModel.delete(log);
+                        for (CallLog log : selectedCallLogs) {
+                            callViewModel.delete(log);
                         }
-                        selectedPhoneLogs.clear();
+                        selectedCallLogs.clear();
                         ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                         return true;
                     case R.id.searchLogs:
-                        AppBarLayout appBarLayout = ((BaseActivity) getActivity()).getAppBarLayout();
                         ((BaseActivity) getActivity()).lockAppBarClosed(appBarLayout);
                         ((BaseActivity) getActivity()).enableToolbarWhenSearchMode();
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SearchFragment()).commitNow();
@@ -107,47 +97,39 @@ public class PhoneFragment extends Fragment {
             }
         });
 
-        phoneAdapter.setOnItemClickListener(new PhoneAdapter.OnItemClickListener() {
+        callAdapter.setOnItemClickListener(new CallAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(PhoneLog phoneLog) {
+            public void onItemClick(CallLog callLog) {
                 if (selection_mode) {
                     // handle selections
-                    if (phoneLog.getIsSelected()) {
-                        selectedPhoneLogs.remove(phoneLog);
+                    if (callLog.isSelected()) {
+                        selectedCallLogs.remove(callLog);
                     } else {
-                        selectedPhoneLogs.add(phoneLog);
+                        selectedCallLogs.add(callLog);
                     }
-                    ((BaseActivity) getActivity()).setPageTitle(selectedPhoneLogs.size() + " Selected");
-                } else {
-                    // get existing log for updating
-                    Intent intent = new Intent(getContext(), AddEditPhoneActivity.class);
-                    intent.putExtra("EXTRA_ID", phoneLog.getId());
-                    intent.putExtra("EXTRA_SID", phoneLog.getSid());
-                    intent.putExtra("EXTRA_DURATION", phoneLog.getDuration());
-                    intent.putExtra("EXTRA_SIM_NUMBER", phoneLog.getSimCardNumber());
-                    startActivity(intent);
+                    ((BaseActivity) getActivity()).setPageTitle(selectedCallLogs.size() + " Selected");
                 }
             }
         });
 
-        phoneAdapter.setOnItemLongClickListener(new PhoneAdapter.OnItemLongClickListener() {
+        callAdapter.setOnItemLongClickListener(new CallAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(PhoneLog phoneLog) {
+            public void onItemLongClick(CallLog callLog) {
                 ((BaseActivity) getActivity()).enableToolbarWhenSelectionMode();
-                selectedPhoneLogs.add(phoneLog);
+                selectedCallLogs.add(callLog);
                 selection_mode = true;
-                ((BaseActivity) getActivity()).setPageTitle(selectedPhoneLogs.size() + " Selected");
+                ((BaseActivity) getActivity()).setPageTitle(selectedCallLogs.size() + " Selected");
 
                 ImageView backButton = (ImageView) getActivity().findViewById(R.id.backBtn);
                 backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         selection_mode = false;
-                        for (PhoneLog log : selectedPhoneLogs) {
-                            log.setIsSelected(false);
+                        for (CallLog log : selectedCallLogs) {
+                            log.setSelected(false);
                         }
-                        selectedPhoneLogs.clear();
-                        phoneAdapter.notifyDataSetChanged();
+                        selectedCallLogs.clear();
+                        callAdapter.notifyDataSetChanged();
                         ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                     }
                 });

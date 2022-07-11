@@ -2,8 +2,6 @@ package com.haud.sctu.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -23,8 +21,6 @@ import androidx.core.view.ViewCompat;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.haud.sctu.R;
 
 
@@ -44,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     protected BottomNavigationView bottomNavigation;
     protected ActionMenuItemView uploadAllSms, uploadAllCalls, settings, uploadSelected, deleteSelected, searchLogs;
 
-    protected EditText searchInput;
+    protected EditText search;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -161,9 +157,9 @@ public class BaseActivity extends AppCompatActivity {
         return bottomNavigation;
     }
 
-    public EditText getSearchInput() {
-        searchInput = findViewById(R.id.searchInput);
-        return searchInput;
+    public EditText getSearch() {
+        search = findViewById(R.id.searchEditText);
+        return search;
     }
 
     /**
@@ -175,7 +171,7 @@ public class BaseActivity extends AppCompatActivity {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if(getCollapsingToolbarLayout().getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(getCollapsingToolbarLayout())) {
                     getSimSpinnerWrapperWhenHeaderExpanded().animate().alpha(0).setDuration(600);
-                    if (getPageTitle().getVisibility() != View.VISIBLE && getSearchInput().getVisibility() != View.VISIBLE) {
+                    if (getPageTitle().getVisibility() != View.VISIBLE && getSearch().getVisibility() != View.VISIBLE) {
                         getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.VISIBLE);
                     }
                     getSimSpinnerWrapperWhenHeaderContracted().animate().alpha(1).setDuration(600);
@@ -227,7 +223,7 @@ public class BaseActivity extends AppCompatActivity {
         getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
         getPageTitle().setVisibility(View.GONE);
         getBottomNavigation().setVisibility(View.VISIBLE);
-        getSearchInput().setVisibility(View.GONE);
+        getSearch().setVisibility(View.GONE);
         getToolbar().getMenu().findItem(R.id.uploadSelected).setVisible(false);
         getToolbar().getMenu().findItem(R.id.deleteSelected).setVisible(false);
         getToolbar().getMenu().findItem(R.id.searchLogs).setVisible(true);
@@ -241,7 +237,7 @@ public class BaseActivity extends AppCompatActivity {
         getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
         getPageTitle().setVisibility(View.VISIBLE);
         getBottomNavigation().setVisibility(View.GONE);
-        getSearchInput().setVisibility(View.GONE);
+        getSearch().setVisibility(View.GONE);
     }
 
     public void enableToolbarWhenSelectionMode() {
@@ -249,7 +245,7 @@ public class BaseActivity extends AppCompatActivity {
         getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
         getPageTitle().setVisibility(View.VISIBLE);
         getBottomNavigation().setVisibility(View.VISIBLE);
-        getSearchInput().setVisibility(View.GONE);
+        getSearch().setVisibility(View.GONE);
         getToolbar().getMenu().findItem(R.id.uploadSelected).setVisible(true);
         getToolbar().getMenu().findItem(R.id.deleteSelected).setVisible(true);
         getToolbar().getMenu().findItem(R.id.searchLogs).setVisible(false);
@@ -263,8 +259,36 @@ public class BaseActivity extends AppCompatActivity {
         getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
         getPageTitle().setVisibility(View.GONE);
         getBottomNavigation().setVisibility(View.GONE);
-        getSearchInput().setVisibility(View.VISIBLE);
+        getSearch().setVisibility(View.VISIBLE);
         getToolbar().getMenu().clear();
+    }
+
+    public void enableToolbarWhenOaNoneSelectionMode() {
+        getBackBtn().setVisibility(View.VISIBLE);
+        getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
+        getPageTitle().setVisibility(View.VISIBLE);
+        getBottomNavigation().setVisibility(View.GONE);
+        getSearch().setVisibility(View.GONE);
+        getToolbar().getMenu().findItem(R.id.uploadSelected).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.deleteSelected).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.searchLogs).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.uploadAllCalls).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.uploadAllSms).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.settings).setVisible(false);
+    }
+
+    public void enableToolbarWhenOaSelectionMode() {
+        getBackBtn().setVisibility(View.VISIBLE);
+        getSimSpinnerWrapperWhenHeaderContracted().setVisibility(View.GONE);
+        getPageTitle().setVisibility(View.VISIBLE);
+        getBottomNavigation().setVisibility(View.GONE);
+        getSearch().setVisibility(View.GONE);
+        getToolbar().getMenu().findItem(R.id.uploadSelected).setVisible(true);
+        getToolbar().getMenu().findItem(R.id.deleteSelected).setVisible(true);
+        getToolbar().getMenu().findItem(R.id.searchLogs).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.uploadAllCalls).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.uploadAllSms).setVisible(false);
+        getToolbar().getMenu().findItem(R.id.settings).setVisible(false);
     }
 
     public void setPageTitle(String pageTitle) {

@@ -10,6 +10,9 @@
         <entry key="app/src/main/res/drawable/ic_baseline_sync.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.116" />
         <entry key="app/src/main/res/drawable/ic_folder.xml" value="0.159" />
+        <entry key="app/src/main/res/drawable/ic_grey_mic.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/ic_grey_sim_card.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_grey_ticks.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_incoming_call.xml" value="0.204" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.116" />
         <entry key="app/src/main/res/drawable/ic_left_arrow.xml" value="0.1" />
@@ -18,6 +21,8 @@
         <entry key="app/src/main/res/drawable/ic_missed_call.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/ic_phone_24.xml" value="0.116" />
+        <entry key="app/src/main/res/drawable/ic_purple_sim_card.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_purple_ticks.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_sim_card.xml" value="0.204" />
         <entry key="app/src/main/res/drawable/ic_sms_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_spinner_arrow.xml" value="0.116" />
@@ -29,7 +34,9 @@
         <entry key="app/src/main/res/drawable/logs_count_bg.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/pressedstated_white_border.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/rounded_corners.xml" value="0.116" />
+        <entry key="app/src/main/res/drawable/search_result_bg.xml" value="0.1135" />
         <entry key="app/src/main/res/drawable/separator_line.xml" value="0.266" />
+        <entry key="app/src/main/res/drawable/sms_by_oa_bg.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/sms_icon_bg.xml" value="0.19" />
         <entry key="app/src/main/res/drawable/spinner_bg.xml" value="0.116" />
         <entry key="app/src/main/res/drawable/spinner_menu.xml" value="0.1" />
@@ -38,19 +45,27 @@
         <entry key="app/src/main/res/drawable/tab_bg.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/tab_selected_line.xml" value="0.117" />
         <entry key="app/src/main/res/drawable/transparent_rounded_corner_white_outline.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_add_call.xml" value="0.2671009771986971" />
         <entry key="app/src/main/res/layout/activity_add_phone.xml" value="0.3328125" />
-        <entry key="app/src/main/res/layout/activity_add_sms.xml" value="0.3328125" />
+        <entry key="app/src/main/res/layout/activity_add_sms.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_base.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/call_row.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/call_row.xml" value="0.27808988764044945" />
+        <entry key="app/src/main/res/layout/call_row_testing.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_call.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/fragment_phone.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_search_testing.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/fragment_sms.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_sms_by_oa.xml" value="0.2" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.22" />
         <entry key="app/src/main/res/layout/logs_row.xml" value="0.3328125" />
         <entry key="app/src/main/res/layout/phone_row.xml" value="0.31535186767578127" />
-        <entry key="app/src/main/res/layout/sms_row.xml" value="0.5317829457364341" />
+        <entry key="app/src/main/res/layout/sms_by_oa_row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sms_by_oa_testing.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sms_row.xml" value="0.14963503649635038" />
+        <entry key="app/src/main/res/layout/sms_search_results_row.xml" value="0.25" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/spinner_menu.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/spinner_menu_item.xml" value="0.17135416666666667" />

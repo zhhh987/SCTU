@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/call_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:id="@+id/call_row_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12 June 2022"
+                    android:textColor="#838383"
+                    android:textSize="10dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <ImageView
+                    android:id="@+id/call_type_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/call_row_date"
+                    android:layout_centerVertical="true" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/call_row_date"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@id/call_type_iv">
+
+                    <TextView
+                        android:id="@+id/call_sid_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CALL SID"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/call_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/call_sid_tv"
+                        android:layout_marginTop="4dp"
+                        android:text="16.02"
+                        android:textColor="#838383"
+                        android:textSize="11dp" />
+
+                    <TextView
+                        android:id="@+id/call_row_sim_number"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:paddingLeft="6dp"
+                        android:paddingTop="4dp"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="7.5dp" />
+
+                    <ImageView
+                        android:id="@+id/call_row_ticks"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_below="@id/call_row_sim_number"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/ic_purple_ticks" />
+
+                    <ImageView
+                        android:id="@+id/call_row_recording"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_below="@id/call_row_sim_number"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="20dp"/>
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#E5E5E5"
+                android:layout_marginStart="55dp"
+                android:layout_marginEnd="2dp"
+                android:layout_gravity="bottom"/>
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

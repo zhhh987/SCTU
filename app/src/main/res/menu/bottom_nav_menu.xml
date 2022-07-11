@@ -7,7 +7,7 @@
         android:title="@string/sms_logs" />
 
     <item
-        android:id="@+id/navigation_phone"
+        android:id="@+id/navigation_call"
         android:icon="@drawable/ic_phone_24"
         android:title="@string/call_logs" />
 

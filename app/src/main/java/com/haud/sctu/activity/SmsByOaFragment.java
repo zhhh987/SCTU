@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -18,37 +19,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.haud.sctu.R;
-import com.haud.sctu.helper.SmsAdapter;
+import com.haud.sctu.helper.SmsByOaAdapter;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.viewmodel.SmsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmsFragment extends Fragment {
+public class SmsByOaFragment extends Fragment {
     private ArrayList<SmsLog> selectedSmsLogs = new ArrayList<>();
     private boolean selection_mode = false;
-    final SmsAdapter smsAdapter = new SmsAdapter();
+    final SmsByOaAdapter smsByOaAdapter = new SmsByOaAdapter();
 
-    public SmsFragment() {
+    public SmsByOaFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sms, container, false);
+        View view = inflater.inflate(R.layout.fragment_sms_by_oa, container, false);
         setHasOptionsMenu(true);
 
-        RecyclerView recyclerView = view.findViewById(R.id.smsRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.smsByOARecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(smsAdapter);
+        recyclerView.setAdapter(smsByOaAdapter);
 
+        String selectedOa = ((MainActivity) getActivity()).selectedSmsOa;
+        ((BaseActivity) getActivity()).setPageTitle(selectedOa);
         SmsViewModel smsViewModel = new ViewModelProvider(getActivity()).get(SmsViewModel.class);
-        smsViewModel.getAllSmsLogs().observe(getViewLifecycleOwner(), new Observer<List<SmsLog>>() {
+        smsViewModel.getAllSmsByOa(selectedOa).observe(getViewLifecycleOwner(), new Observer<List<SmsLog>>() {
             @Override
             public void onChanged(List<SmsLog> smsLogs) {
-                smsAdapter.setSmsLogs(smsLogs);
+                smsByOaAdapter.setSmsLogs(smsLogs);
             }
         });
 
@@ -56,43 +59,51 @@ public class SmsFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.main_menu);
-        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
-        toolbar.getMenu().findItem(R.id.uploadAllCalls).setVisible(false);
+        ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.settings:
-                        Intent intent = new Intent(getActivity(),SettingsActivity.class);
-                        startActivity(intent);
-                        return true;
-                    case R.id.uploadAllSms:
-                        return true;
                     case R.id.uploadSelected:
                         return true;
                     case R.id.deleteSelected:
                         for (SmsLog log : selectedSmsLogs) {
-                            String selectedOa = log.getOa();
-                            System.out.println(selectedOa);
-                            smsViewModel.deleteAllSmsLogsByOa(selectedOa);
+                            smsViewModel.delete(log);
                         }
                         selectedSmsLogs.clear();
-                        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
+                        ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
                         selection_mode = false;
-                        return true;
-                    case R.id.searchLogs:
-                        ((BaseActivity) getActivity()).lockAppBarClosed(appBarLayout);
-                        ((BaseActivity) getActivity()).enableToolbarWhenSearchMode();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SearchFragment()).commitNow();
                         return true;
                 }
                 return false;
             }
         });
 
-        smsAdapter.setOnItemClickListener(new SmsAdapter.OnItemClickListener() {
+
+        ImageView backButton = getActivity().findViewById(R.id.backBtn);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(SmsLog smsLog) {
+            public void onClick(View view) {
+                if (selection_mode) {
+                    for (SmsLog log : selectedSmsLogs) {
+                        log.setSelected(false);
+                    }
+                    selectedSmsLogs.clear();
+                    smsByOaAdapter.notifyDataSetChanged();
+                    ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
+                    ((BaseActivity) getActivity()).setPageTitle(selectedOa);
+                    selection_mode = false;
+                } else {
+                    ((BaseActivity) getActivity()).unlockAppBar(appBarLayout);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SmsFragment()).commitNow();
+                }
+
+            }
+        });
+
+        smsByOaAdapter.setOnOaItemClickListener(new SmsByOaAdapter.OnOaItemClickListener() {
+            @Override
+            public void onOaItemClick(SmsLog smsLog) {
                 if (selection_mode) {
                     // handle selections
                     if (smsLog.isSelected()) {
@@ -101,19 +112,14 @@ public class SmsFragment extends Fragment {
                         selectedSmsLogs.add(smsLog);
                     }
                     ((BaseActivity) getActivity()).setPageTitle(selectedSmsLogs.size() + " Selected");
-                } else {
-                    ((MainActivity) getActivity()).selectedSmsOa = smsLog.getOa();
-                    ((BaseActivity) getActivity()).lockAppBarClosed(appBarLayout);
-                    ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SmsByOaFragment()).commitNow();
                 }
             }
         });
 
-        smsAdapter.setOnItemLongClickListener(new SmsAdapter.OnItemLongClickListener() {
+        smsByOaAdapter.setOnOaItemLongClickListener(new SmsByOaAdapter.OnOaItemLongClickListener() {
             @Override
-            public void onItemLongClick(SmsLog smsLog) {
-                ((BaseActivity) getActivity()).enableToolbarWhenSelectionMode();
+            public void onOaItemLongClick(SmsLog smsLog) {
+                ((BaseActivity) getActivity()).enableToolbarWhenOaSelectionMode();
                 selection_mode = true;
                 selectedSmsLogs.add(smsLog);
                 ((BaseActivity) getActivity()).setPageTitle(selectedSmsLogs.size() + " Selected");
@@ -127,14 +133,16 @@ public class SmsFragment extends Fragment {
                             log.setSelected(false);
                         }
                         selectedSmsLogs.clear();
-                        smsAdapter.notifyDataSetChanged();
-                        ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
+                        smsByOaAdapter.notifyDataSetChanged();
+                        ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
+                        ((BaseActivity) getActivity()).setPageTitle(selectedOa);
                     }
                 });
+
+
             }
         });
 
         return view;
     }
-
 }

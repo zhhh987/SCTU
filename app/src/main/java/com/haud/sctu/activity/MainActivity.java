@@ -3,32 +3,31 @@ package com.haud.sctu.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.haud.sctu.R;
-import com.haud.sctu.model.SmsLog;
-import com.haud.sctu.viewmodel.PhoneViewModel;
+import com.haud.sctu.viewmodel.CallViewModel;
 import com.haud.sctu.viewmodel.SmsViewModel;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     String [] simCards = {"All SIM Cards", "SIM 1", "SIM 2"};
     FloatingActionButton add_button;
-    
+    String selectedSmsOa;
+    String searchInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +35,16 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         appBarListener();
 
         new ViewModelProvider(this).get(SmsViewModel.class);
-        new ViewModelProvider(this).get(PhoneViewModel.class);
+        new ViewModelProvider(this).get(CallViewModel.class);
+
+        add_button = findViewById(R.id.add_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddEditSmsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SmsFragment()).commitNow();
         getBottomNavigation().setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -45,17 +53,48 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
                 switch (item.getItemId()) {
-                    case R.id.navigation_phone:
-                        selectedFragment = new PhoneFragment();
+                    case R.id.navigation_call:
+                        selectedFragment = new CallFragment();
+                        add_button = findViewById(R.id.add_button);
+                        add_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MainActivity.this, AddEditCallActivity.class);
+                                startActivity(intent);
+                            }
+                        });
                         break;
                     case R.id.navigation_sms:
                         selectedFragment = new SmsFragment();
+                        add_button = findViewById(R.id.add_button);
+                        add_button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MainActivity.this, AddEditSmsActivity.class);
+                                startActivity(intent);
+                            }
+                        });
                         break;
                 }
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, selectedFragment).commit();
                 }
                 return true;
+            }
+        });
+
+        EditText searchEditText = getSearch();
+        searchEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                searchInput = editable.toString();
             }
         });
 
@@ -88,8 +127,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             getSpinnerSimWhenHeaderExpanded().setSelection(i);
         }
     }
-
-
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {

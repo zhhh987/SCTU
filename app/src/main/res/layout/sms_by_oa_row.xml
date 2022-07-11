@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sms_by_oa_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/sms_by_oa_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:text="12 June 2022"
+                android:textColor="#838383"
+                android:textSize="10dp" />
+
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sms_by_oa_date"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/sms_by_oa_bg">
+
+                <TextView
+                    android:id="@+id/message_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your verification code is 123456. Do not share this code with anyone."
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/sms_row_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/message_body"
+                    android:layout_marginTop="5dp"
+                    android:text="12.05"
+                    android:textColor="#838383"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/sms_row_sim_number"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_below="@id/message_body"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="6dp"
+                    android:paddingTop="4dp"
+                    android:text="2"
+                    android:textColor="@color/white"
+                    android:textSize="7.5dp" />
+
+                <ImageView
+                    android:id="@+id/sms_row_ticks"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_below="@id/message_body"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_toLeftOf="@id/sms_row_sim_number" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
+
+

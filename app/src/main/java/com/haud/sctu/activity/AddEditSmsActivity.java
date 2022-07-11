@@ -9,14 +9,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Dao;
 
 import com.haud.sctu.R;
+import com.haud.sctu.model.CallLog;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.viewmodel.SmsViewModel;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 public class AddEditSmsActivity extends BaseActivity {
 
-    private EditText date_input, sid_input, content_input;
     Button save_button;
     private SmsViewModel smsViewModel;
 
@@ -25,49 +31,32 @@ public class AddEditSmsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sms);
         smsViewModel = new ViewModelProvider(this).get(SmsViewModel.class);
+        lockAppBarClosed(getAppBarLayout());
 
-        sid_input = findViewById(R.id.sms_sid_input);
-        content_input = findViewById(R.id.sms_content_input);
-        date_input = findViewById(R.id.sms_date_input);
         save_button = findViewById(R.id.save_button);
-
-        Intent intent = getIntent();
-        if (intent.hasExtra("EXTRA_ID")) {
-            setTitle("Edit SMS Log");
-            sid_input.setText(intent.getStringExtra("EXTRA_SID"));
-            content_input.setText(intent.getStringExtra("EXTRA_CONTENT"));
-            date_input.setText(intent.getStringExtra("EXTRA_DATE"));
-
-        }
-
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sid = sid_input.getText().toString();
-                String content = content_input.getText().toString();
-                String date = date_input.getText().toString();
 
-                if (sid.trim().isEmpty() || content.trim().isEmpty() || date.trim().isEmpty()) {
-                    Toast.makeText(AddEditSmsActivity.this, "Inputs cannot be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (intent.hasExtra("EXTRA_ID")) {
-                    int id = intent.getIntExtra("EXTRA_ID", -1);
-                    if (id == -1) {
-                        Toast.makeText(AddEditSmsActivity.this, "SMS log cannot be updated", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    SmsLog smsLog = new SmsLog(sid,content,date,false,false);
-                    smsLog.setId(id);
-                    smsViewModel.update(smsLog);
-                    Toast.makeText(AddEditSmsActivity.this, "SMS log updated", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    SmsLog smsLog = new SmsLog(sid,content,date,false,false);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                String dateString = "20-05-2022 09:14:11";
+
+                try {
+                    Date date = sdf.parse(dateString);
+                    long receivedDateTime = date.getTime();
+                    SmsLog smsLog = new SmsLog(1, (byte) 6433,"HS161S","123123",receivedDateTime,
+                            "Your verification code is 54134. Do not share this code with anyone.","HFA8401",
+                            "731HJV2", 2,false,false);
                     smsViewModel.insert(smsLog);
-                    Toast.makeText(AddEditSmsActivity.this, "SMS log saved", Toast.LENGTH_SHORT).show();
-                    finish();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+                finish();
             }
         });
     }
+
+
 }
+

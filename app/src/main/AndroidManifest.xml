@@ -29,7 +29,7 @@
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AddLog"/>
 
-        <activity android:name=".activity.AddEditPhoneActivity"
+        <activity android:name=".activity.AddEditCallActivity"
             android:label="Add New Phone Log"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AddLog"/>

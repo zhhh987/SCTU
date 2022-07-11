@@ -34,11 +34,19 @@ public class SmsViewModel extends AndroidViewModel {
         repository.deleteSms(smsLog);
     }
 
-    public void deleteAllSmsLogs() {
-        repository.deleteAllSmsLogs();
+    public void deleteAllSmsLogsByOa(String selectedOa) {
+        repository.deleteAllSmsLogsByOa(selectedOa);
     }
 
     public LiveData<List<SmsLog>> getAllSmsLogs() {
         return allSmsLogs;
+    }
+
+    public LiveData<List<SmsLog>> getAllSmsByOa(String selectedOa) {
+        return repository.getAllSmsByOa(selectedOa);
+    }
+
+    public LiveData<List<SmsLog>> getSmsSearchResults(String input) {
+        return repository.getSmsSearchResults(input);
     }
 }

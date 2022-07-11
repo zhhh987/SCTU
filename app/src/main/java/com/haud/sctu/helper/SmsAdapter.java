@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.haud.sctu.R;
 import com.haud.sctu.model.SmsLog;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
@@ -21,23 +24,26 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private boolean selection_mode = false;
-    private int integer;
 
     @NonNull
     @Override
     public SmsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sms_row,parent,false);
-        return new SmsHolder(itemView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sms_row,parent,false);
+        return new SmsHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SmsHolder holder, int position) {
         SmsLog currentSmsLog = smsLogs.get(position);
-        holder.textViewDate.setText(currentSmsLog.getDate());
-        holder.textViewSid.setText(currentSmsLog.getSid());
-        holder.textViewContent.setText(currentSmsLog.getContent());
+        holder.textViewSid.setText(currentSmsLog.getOa());
+        holder.textViewContent.setText(currentSmsLog.getBody());
 
-        if (currentSmsLog.getIsSelected()) {
+        long millisecondsDateTime = currentSmsLog.getReceived();
+        Date receivedDate = new Date(millisecondsDateTime);
+        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+        holder.textViewDateTime.setText(String.valueOf(dateFormat.format(receivedDate)));
+
+        if (currentSmsLog.isSelected()) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#E0DCEC"));
         } else {
             holder.cardView.setCardBackgroundColor(Color.WHITE);
@@ -54,21 +60,19 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
         notifyDataSetChanged();
     }
 
-
-
     public SmsLog getSmsLogAt(int position) {
         return smsLogs.get(position);
     }
 
     class SmsHolder extends RecyclerView.ViewHolder {
-        private TextView textViewDate;
+        private TextView textViewDateTime;
         private TextView textViewSid;
         private TextView textViewContent;
-        CardView cardView = (CardView) itemView.findViewById(R.id.sms_card_view);
+        CardView cardView = (CardView) itemView.findViewById(R.id.sms_cv);
 
         public SmsHolder(View itemView) {
             super(itemView);
-            textViewDate = itemView.findViewById(R.id.sms_date_tv);
+            textViewDateTime = itemView.findViewById(R.id.sms_date_tv);
             textViewSid = itemView.findViewById(R.id.sms_sid_tv);
             textViewContent = itemView.findViewById(R.id.sms_content_tv);
 
@@ -79,10 +83,10 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
                     if (selection_mode) {
                         if (clickListener != null && position != RecyclerView.NO_POSITION) {
                             clickListener.onItemClick(smsLogs.get(position));
-                            if (smsLogs.get(position).getIsSelected()) {
-                                smsLogs.get(position).setIsSelected(false);
+                            if (smsLogs.get(position).isSelected()) {
+                                smsLogs.get(position).setSelected(false);
                             } else {
-                                smsLogs.get(position).setIsSelected(true);
+                                smsLogs.get(position).setSelected(true);
                             }
                             notifyDataSetChanged();
                         }
@@ -102,7 +106,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
                     if (longClickListener != null && position != RecyclerView.NO_POSITION) {
                         longClickListener.onItemLongClick(smsLogs.get(position));
                         selection_mode = true;
-                        smsLogs.get(position).setIsSelected(true);
+                        smsLogs.get(position).setSelected(true);
                         notifyDataSetChanged();
                     }
                     return true;
