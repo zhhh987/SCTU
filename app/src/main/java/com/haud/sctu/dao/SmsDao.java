@@ -28,11 +28,15 @@ public interface SmsDao {
     @Query("DELETE FROM sms_log_table WHERE oa = :selectedOa")
     void deleteAllSmsLogsByOa(String selectedOa);
 
-    @Query("SELECT *, MAX(received) FROM sms_log_table GROUP BY oa ORDER BY MAX(received) DESC")
-    LiveData<List<SmsLog>> getLatestSmsLogsByOa();
+    @Query("SELECT * FROM sms_log_table")
+    LiveData<List<SmsLog>> getAllSms();
 
     @Query("SELECT * FROM sms_log_table WHERE oa = :selectedOa ORDER BY received DESC")
     LiveData<List<SmsLog>> getAllSmsByOa(String selectedOa);
+
+    @Query ("SELECT COUNT(*) FROM sms_log_table WHERE oa = :selectedOa")
+    LiveData<Integer> getSmsByOaCount(String selectedOa);
+
 
     @Query("SELECT * FROM sms_log_table WHERE body OR oa LIKE :input ORDER BY received DESC")
     LiveData<List<SmsLog>> getSmsSearchResults(String input);

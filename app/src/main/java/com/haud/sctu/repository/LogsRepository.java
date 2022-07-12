@@ -24,7 +24,7 @@ public class LogsRepository {
         LogsDatabase logsDatabase = LogsDatabase.getInstance(application);
         smsDao = logsDatabase.smsDao();
         callDao = logsDatabase.callDao();
-        allSmsLogs = smsDao.getLatestSmsLogsByOa();
+        allSmsLogs = smsDao.getAllSms();
         allCallLogs = callDao.getAllCallLogs();
     }
 
@@ -57,7 +57,9 @@ public class LogsRepository {
         return smsDao.getSmsSearchResults(input);
     }
 
-
+    public LiveData<Integer> getSmsByOaCount(String selectedOa) {
+        return smsDao.getSmsByOaCount(selectedOa);
+    }
 
     private static class InsertSmsAsyncTask extends AsyncTask<SmsLog, Void, Void> {
         private SmsDao smsDao;

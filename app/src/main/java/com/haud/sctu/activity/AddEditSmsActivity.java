@@ -39,14 +39,14 @@ public class AddEditSmsActivity extends BaseActivity {
             public void onClick(View view) {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                String dateString = "20-05-2022 09:14:11";
+                String dateString = "06-07-2022 19:54:41";
 
                 try {
                     Date date = sdf.parse(dateString);
                     long receivedDateTime = date.getTime();
-                    SmsLog smsLog = new SmsLog(1, (byte) 6433,"HS161S","123123",receivedDateTime,
-                            "Your verification code is 54134. Do not share this code with anyone.","HFA8401",
-                            "731HJV2", 2,false,false);
+                    SmsLog smsLog = new SmsLog(1, (byte) 3453,"HS161S","11223344",receivedDateTime,
+                            "Your verification code is 245.","HFA8401",
+                            "731HJV2", 1,true,false);
                     smsViewModel.insert(smsLog);
 
                 } catch (ParseException e) {

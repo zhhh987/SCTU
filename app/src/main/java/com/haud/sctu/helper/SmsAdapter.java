@@ -8,15 +8,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.haud.sctu.R;
 import com.haud.sctu.model.SmsLog;
+import com.haud.sctu.viewmodel.SmsViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 
 public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
@@ -24,6 +28,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private boolean selection_mode = false;
+    HashMap<String, Date> latestSmsByOa = new HashMap<String, Date>();
 
     @NonNull
     @Override
@@ -35,13 +40,27 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     @Override
     public void onBindViewHolder(@NonNull SmsHolder holder, int position) {
         SmsLog currentSmsLog = smsLogs.get(position);
-        holder.textViewSid.setText(currentSmsLog.getOa());
+        String currentOa = currentSmsLog.getOa();
+        holder.textViewSid.setText(currentOa);
         holder.textViewContent.setText(currentSmsLog.getBody());
 
         long millisecondsDateTime = currentSmsLog.getReceived();
         Date receivedDate = new Date(millisecondsDateTime);
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        holder.textViewDateTime.setText(String.valueOf(dateFormat.format(receivedDate)));
+        holder.textViewDateTime.setText(dateFormat.format(receivedDate));
+
+        if (latestSmsByOa.containsKey(currentOa)) {
+            if (latestSmsByOa.get(currentOa).before(receivedDate)) {
+                latestSmsByOa.remove(currentOa);
+                latestSmsByOa.put(currentOa,receivedDate);
+                holder.cardView.setVisibility(View.VISIBLE);
+            } else {
+                holder.cardView.setVisibility(View.GONE);
+            }
+        } else {
+            latestSmsByOa.put(currentOa,receivedDate);
+            holder.cardView.setVisibility(View.VISIBLE);
+        }
 
         if (currentSmsLog.isSelected()) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#E0DCEC"));
@@ -60,14 +79,11 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
         notifyDataSetChanged();
     }
 
-    public SmsLog getSmsLogAt(int position) {
-        return smsLogs.get(position);
-    }
-
     class SmsHolder extends RecyclerView.ViewHolder {
         private TextView textViewDateTime;
         private TextView textViewSid;
         private TextView textViewContent;
+        private TextView textViewSmsBySidCount;
         CardView cardView = (CardView) itemView.findViewById(R.id.sms_cv);
 
         public SmsHolder(View itemView) {
@@ -75,6 +91,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
             textViewDateTime = itemView.findViewById(R.id.sms_date_tv);
             textViewSid = itemView.findViewById(R.id.sms_sid_tv);
             textViewContent = itemView.findViewById(R.id.sms_content_tv);
+            textViewSmsBySidCount = itemView.findViewById(R.id.total_sms_by_sid_tv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

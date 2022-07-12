@@ -49,6 +49,7 @@ public class SmsFragment extends Fragment {
             @Override
             public void onChanged(List<SmsLog> smsLogs) {
                 smsAdapter.setSmsLogs(smsLogs);
+
             }
         });
 

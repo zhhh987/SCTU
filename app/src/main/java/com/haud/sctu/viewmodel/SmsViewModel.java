@@ -46,6 +46,10 @@ public class SmsViewModel extends AndroidViewModel {
         return repository.getAllSmsByOa(selectedOa);
     }
 
+    public LiveData<Integer> getSmsByOaCount(String selectedOa){
+        return repository.getSmsByOaCount(selectedOa);
+    }
+
     public LiveData<List<SmsLog>> getSmsSearchResults(String input) {
         return repository.getSmsSearchResults(input);
     }
