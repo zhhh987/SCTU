@@ -11,6 +11,7 @@ import androidx.room.Update;
 
 import com.haud.sctu.model.SmsLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -28,7 +29,7 @@ public interface SmsDao {
     @Query("DELETE FROM sms_log_table WHERE oa = :selectedOa")
     void deleteAllSmsLogsByOa(String selectedOa);
 
-    @Query("SELECT * FROM sms_log_table")
+    @Query("SELECT * FROM sms_log_table ORDER BY received DESC")
     LiveData<List<SmsLog>> getAllSms();
 
     @Query("SELECT * FROM sms_log_table WHERE oa = :selectedOa ORDER BY received DESC")

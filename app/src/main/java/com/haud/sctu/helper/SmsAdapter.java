@@ -28,7 +28,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private boolean selection_mode = false;
-    HashMap<String, Date> latestSmsByOa = new HashMap<String, Date>();
+    public List<String> allSmsOa = new ArrayList<>();
 
     @NonNull
     @Override
@@ -49,16 +49,14 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         holder.textViewDateTime.setText(dateFormat.format(receivedDate));
 
-        if (latestSmsByOa.containsKey(currentOa)) {
-            if (latestSmsByOa.get(currentOa).before(receivedDate)) {
-                latestSmsByOa.remove(currentOa);
-                latestSmsByOa.put(currentOa,receivedDate);
+        if (allSmsOa.contains(currentOa)) {
+            if (currentSmsLog.isSelected()) {
                 holder.cardView.setVisibility(View.VISIBLE);
             } else {
                 holder.cardView.setVisibility(View.GONE);
             }
         } else {
-            latestSmsByOa.put(currentOa,receivedDate);
+            allSmsOa.add(currentOa);
             holder.cardView.setVisibility(View.VISIBLE);
         }
 
@@ -98,6 +96,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (selection_mode) {
+                        allSmsOa.clear();
                         if (clickListener != null && position != RecyclerView.NO_POSITION) {
                             clickListener.onItemClick(smsLogs.get(position));
                             if (smsLogs.get(position).isSelected()) {
@@ -119,6 +118,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SmsHolder> {
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    allSmsOa.clear();
                     int position = getAdapterPosition();
                     if (longClickListener != null && position != RecyclerView.NO_POSITION) {
                         longClickListener.onItemLongClick(smsLogs.get(position));

@@ -25,7 +25,7 @@ public class SmsByOaAdapter extends RecyclerView.Adapter<SmsByOaAdapter.SmsByOaH
     private OnOaItemClickListener oaClickListener;
     private OnOaItemLongClickListener oaLongClickListener;
     private boolean selection_mode = false;
-    private List<String> receivedDates = new ArrayList<>();
+    public List<String> receivedDates = new ArrayList<>();
 
 
     @NonNull
@@ -50,7 +50,11 @@ public class SmsByOaAdapter extends RecyclerView.Adapter<SmsByOaAdapter.SmsByOaH
 
         String formattedDate = sdfDate.format(receiveDateTime);
         if (receivedDates.contains(formattedDate)) {
-            holder.textViewDate.setVisibility(View.GONE);
+            if (currentSmsLog.isSelected()) {
+                holder.textViewDate.setVisibility(View.VISIBLE);
+            } else {
+                holder.textViewDate.setVisibility(View.GONE);
+            }
         } else {
             holder.textViewDate.setVisibility(View.VISIBLE);
             receivedDates.add(formattedDate);
@@ -107,6 +111,7 @@ public class SmsByOaAdapter extends RecyclerView.Adapter<SmsByOaAdapter.SmsByOaH
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (selection_mode) {
+                        receivedDates.clear();
                         if (oaClickListener != null && position != RecyclerView.NO_POSITION) {
                             oaClickListener.onOaItemClick(smsLogs.get(position));
                             if (smsLogs.get(position).isSelected()) {
@@ -128,6 +133,7 @@ public class SmsByOaAdapter extends RecyclerView.Adapter<SmsByOaAdapter.SmsByOaH
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    receivedDates.clear();
                     int position = getAdapterPosition();
                     if (oaLongClickListener != null && position != RecyclerView.NO_POSITION) {
                         oaLongClickListener.onOaItemLongClick(smsLogs.get(position));

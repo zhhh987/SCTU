@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.haud.sctu.R;
+import com.haud.sctu.helper.SmsAdapter;
 import com.haud.sctu.helper.SmsByOaAdapter;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.viewmodel.SmsViewModel;
@@ -30,6 +31,7 @@ public class SmsByOaFragment extends Fragment {
     private ArrayList<SmsLog> selectedSmsLogs = new ArrayList<>();
     private boolean selection_mode = false;
     final SmsByOaAdapter smsByOaAdapter = new SmsByOaAdapter();
+    final SmsAdapter smsAdapter = new SmsAdapter();
 
     public SmsByOaFragment() {
     }
@@ -71,6 +73,7 @@ public class SmsByOaFragment extends Fragment {
                             smsViewModel.delete(log);
                         }
                         selectedSmsLogs.clear();
+                        smsByOaAdapter.receivedDates.clear();
                         ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
                         selection_mode = false;
                         return true;
@@ -89,6 +92,7 @@ public class SmsByOaFragment extends Fragment {
                         log.setSelected(false);
                     }
                     selectedSmsLogs.clear();
+                    smsByOaAdapter.receivedDates.clear();
                     smsByOaAdapter.notifyDataSetChanged();
                     ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
                     ((BaseActivity) getActivity()).setPageTitle(selectedOa);
@@ -96,6 +100,8 @@ public class SmsByOaFragment extends Fragment {
                 } else {
                     ((BaseActivity) getActivity()).unlockAppBar(appBarLayout);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new SmsFragment()).commitNow();
+                    smsAdapter.allSmsOa.clear();
+                    smsByOaAdapter.receivedDates.clear();
                 }
 
             }
@@ -123,23 +129,6 @@ public class SmsByOaFragment extends Fragment {
                 selection_mode = true;
                 selectedSmsLogs.add(smsLog);
                 ((BaseActivity) getActivity()).setPageTitle(selectedSmsLogs.size() + " Selected");
-
-                ImageView backButton = (ImageView) getActivity().findViewById(R.id.backBtn);
-                backButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        selection_mode = false;
-                        for (SmsLog log : selectedSmsLogs) {
-                            log.setSelected(false);
-                        }
-                        selectedSmsLogs.clear();
-                        smsByOaAdapter.notifyDataSetChanged();
-                        ((BaseActivity) getActivity()).enableToolbarWhenOaNoneSelectionMode();
-                        ((BaseActivity) getActivity()).setPageTitle(selectedOa);
-                    }
-                });
-
-
             }
         });
 

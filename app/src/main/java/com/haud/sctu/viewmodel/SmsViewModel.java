@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.repository.LogsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SmsViewModel extends AndroidViewModel {

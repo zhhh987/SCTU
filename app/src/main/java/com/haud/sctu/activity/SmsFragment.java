@@ -74,12 +74,13 @@ public class SmsFragment extends Fragment {
                     case R.id.deleteSelected:
                         for (SmsLog log : selectedSmsLogs) {
                             String selectedOa = log.getOa();
-                            System.out.println(selectedOa);
                             smsViewModel.deleteAllSmsLogsByOa(selectedOa);
                         }
                         selectedSmsLogs.clear();
+                        smsAdapter.allSmsOa.clear();
                         ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                         selection_mode = false;
+                        smsAdapter.notifyDataSetChanged();
                         return true;
                     case R.id.searchLogs:
                         ((BaseActivity) getActivity()).lockAppBarClosed(appBarLayout);
@@ -128,6 +129,7 @@ public class SmsFragment extends Fragment {
                             log.setSelected(false);
                         }
                         selectedSmsLogs.clear();
+                        smsAdapter.allSmsOa.clear();
                         smsAdapter.notifyDataSetChanged();
                         ((BaseActivity) getActivity()).enableToolBarWhenCollapsableEnabled();
                     }

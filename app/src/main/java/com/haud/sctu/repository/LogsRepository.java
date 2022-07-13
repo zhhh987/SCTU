@@ -11,6 +11,7 @@ import com.haud.sctu.dao.SmsDao;
 import com.haud.sctu.model.SmsLog;
 import com.haud.sctu.db.LogsDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogsRepository {
@@ -42,7 +43,7 @@ public class LogsRepository {
     }
 
     public void deleteAllSmsLogsByOa(String selectedOa) {
-        new DeleteAllSmsByOaAsyncTask(smsDao).execute();
+        new DeleteAllSmsByOaAsyncTask(smsDao, selectedOa).execute();
     }
 
     public LiveData<List<SmsLog>> getAllSmsLogs() {
@@ -107,8 +108,9 @@ public class LogsRepository {
         private SmsDao smsDao;
         private String selectedOa;
 
-        private DeleteAllSmsByOaAsyncTask(SmsDao smsDao)  {
+        private DeleteAllSmsByOaAsyncTask(SmsDao smsDao, String selectedOa)  {
             this.smsDao = smsDao;
+            this.selectedOa = selectedOa;
         }
 
         @Override
