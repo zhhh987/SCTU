@@ -35,18 +35,18 @@ public class AddEditCallActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                String StartDateString = "01-055-2022 11:09:22";
-                String EndDateString = "01-05-2022 11:13:34";
+                String startDateString = "17-06-2022 22:05:22";
+                String endDateString = "17-06-2022 22:16:34";
 
                 try {
-                    Date startDateTime = sdf.parse(StartDateString);
-                    Date endDateTime = sdf.parse(EndDateString);
+                    Date startDateTime = sdf.parse(startDateString);
+                    Date endDateTime = sdf.parse(endDateString);
                     long startTime = startDateTime.getTime();
                     long endTime = endDateTime.getTime();
-                    CallLog callLog = new CallLog(686,"JVEH123","FAJHF23","11223344","Incoming",startTime,endTime,
+                    CallLog callLog = new CallLog(64262,"JVEH123","FAJHF23","1234567","Missed",startTime,endTime,
                             "FI223","4124","JDIWD","E014",
                             startTime,endTime,5645,63456,
-                            null,true,false,false);
+                            null,false,true,false);
                     callViewModel.insert(callLog);
 
                 } catch (ParseException e) {

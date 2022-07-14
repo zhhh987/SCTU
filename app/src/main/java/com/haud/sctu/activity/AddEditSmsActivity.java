@@ -39,12 +39,12 @@ public class AddEditSmsActivity extends BaseActivity {
             public void onClick(View view) {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                String dateString = "06-07-2022 19:54:41";
+                String dateString = "06-04-2022 19:54:41";
 
                 try {
                     Date date = sdf.parse(dateString);
                     long receivedDateTime = date.getTime();
-                    SmsLog smsLog = new SmsLog(1, (byte) 3453,"HS161S","11223344",receivedDateTime,
+                    SmsLog smsLog = new SmsLog(1, (byte) 7563,"HS161S","123123",receivedDateTime,
                             "Your verification code is 245.","HFA8401",
                             "731HJV2", 1,true,false);
                     smsViewModel.insert(smsLog);

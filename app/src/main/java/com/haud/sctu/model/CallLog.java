@@ -213,8 +213,8 @@ public class CallLog {
         return isSelected;
     }
 
-    public void setSelected(boolean uploaded) {
-        isSelected = isSelected;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public CallLog(int id, @NonNull String evenUuid, @NonNull String callDataIdentifier, @NonNull String sid, @NonNull String callType,

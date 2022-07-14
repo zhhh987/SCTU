@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.haud.sctu.model.CallLog;
 import com.haud.sctu.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,13 +43,18 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallHolder> {
 
         long millisecondsStartDateTime = currentCallLog.getStartDatetime();
         Date startDateTime = new Date(millisecondsStartDateTime);
-        SimpleDateFormat sdfTime = new SimpleDateFormat("HH.mm");
-        SimpleDateFormat sdfDate = new SimpleDateFormat("dd MMM yyyy");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH.mm");
+        DateFormat dateFormatDate = new SimpleDateFormat("dd MMM yyyy");
 
-        holder.textViewTime.setText(sdfTime.format(startDateTime));
-        String formattedDate = sdfDate.format(startDateTime);
+        holder.textViewTime.setText(dateFormatTime.format(startDateTime));
+        String formattedDate = dateFormatDate.format(startDateTime);
         if (receivedDates.contains(formattedDate)) {
-            holder.textViewDate.setVisibility(View.GONE);
+            if (currentCallLog.isSelected() && holder.textViewDate.getVisibility() == View.VISIBLE) {
+                holder.textViewDate.setVisibility(View.VISIBLE);
+            } else {
+                holder.textViewDate.setVisibility(View.GONE);
+            }
+
         } else {
             holder.textViewDate.setVisibility(View.VISIBLE);
             receivedDates.add(formattedDate);
@@ -128,6 +134,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallHolder> {
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (selection_mode) {
+                        receivedDates.clear();
                         if (clickListener != null && position != RecyclerView.NO_POSITION) {
                             clickListener.onItemClick(callLogs.get(position));
                             if (callLogs.get(position).isSelected()) {
@@ -150,6 +157,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallHolder> {
                 @Override
                 public boolean onLongClick(View view) {
                     int position = getAdapterPosition();
+                    receivedDates.clear();
                     if (longClickListener != null && position != RecyclerView.NO_POSITION) {
                         longClickListener.onItemLongClick(callLogs.get(position));
                         selection_mode = true;

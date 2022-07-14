@@ -29,7 +29,8 @@ public interface CallDao {
     @Query("DELETE FROM call_log_table")
     void deleteAllCallLogs();
 
-    @Query("SELECT * FROM call_log_table")
+    @Query("SELECT * FROM call_log_table ORDER BY startDatetime DESC")
     LiveData<List<CallLog>> getAllCallLogs();
 }
+
 
